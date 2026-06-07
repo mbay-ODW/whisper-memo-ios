@@ -41,6 +41,14 @@ struct SettingsView: View {
             }
 
             Section {
+                NavigationLink {
+                    StatsView()
+                } label: {
+                    Label("Statistik & Speicher", systemImage: "chart.bar.doc.horizontal")
+                }
+            }
+
+            Section {
                 Button("Speichern") { save() }
                     .disabled(serverURL.isEmpty || appToken.isEmpty)
             }

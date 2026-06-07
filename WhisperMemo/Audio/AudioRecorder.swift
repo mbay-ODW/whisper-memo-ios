@@ -8,14 +8,44 @@ final class AudioRecorder: NSObject, ObservableObject {
     @Published var duration: TimeInterval = 0
     @Published var permissionDenied = false
     @Published var level: Float = 0   // -160…0 dB, für Visualisierung
+    @Published var inputName: String = "Mikrofon"
+    @Published var inputIsBluetooth: Bool = false
 
     private var recorder: AVAudioRecorder?
     private var timer: Timer?
     private(set) var currentFileURL: URL?
     private(set) var currentFilename: String?
 
+    override init() {
+        super.init()
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(handleRouteChange(_:)),
+            name: AVAudioSession.routeChangeNotification, object: nil)
+        updateInputInfo()
+    }
+
     func requestPermission() async -> Bool {
         await AVAudioApplication.requestRecordPermission()
+    }
+
+    @objc private nonisolated func handleRouteChange(_ n: Notification) {
+        Task { @MainActor [weak self] in self?.updateInputInfo() }
+    }
+
+    private func updateInputInfo() {
+        let route = AVAudioSession.sharedInstance().currentRoute
+        guard let input = route.inputs.first else {
+            inputName = "Mikrofon"
+            inputIsBluetooth = false
+            return
+        }
+        inputName = input.portName
+        switch input.portType {
+        case .bluetoothHFP, .bluetoothA2DP, .bluetoothLE:
+            inputIsBluetooth = true
+        default:
+            inputIsBluetooth = false
+        }
     }
 
     func startRecording() async throws {
@@ -25,9 +55,13 @@ final class AudioRecorder: NSObject, ObservableObject {
         }
 
         let session = AVAudioSession.sharedInstance()
+        // .allowBluetooth = HFP input from AirPods/BT-Headsets as recording source
+        // .allowBluetoothA2DP = high-quality playback to BT speakers/headphones
+        // .defaultToSpeaker = fall back to speaker when nothing else is connected
         try session.setCategory(.playAndRecord, mode: .default,
-                                options: [.defaultToSpeaker, .allowBluetoothA2DP])
+                                options: [.defaultToSpeaker, .allowBluetooth, .allowBluetoothA2DP])
         try session.setActive(true)
+        updateInputInfo()
 
         let filename = "memo_\(Int(Date().timeIntervalSince1970)).m4a"
         let url = recordingsDirectory().appendingPathComponent(filename)

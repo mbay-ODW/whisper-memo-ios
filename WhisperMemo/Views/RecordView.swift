@@ -51,6 +51,12 @@ struct RecordView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
+                    // Input source (BT headphones / mic)
+                    Label(recorder.inputName,
+                          systemImage: recorder.inputIsBluetooth ? "airpods" : "mic")
+                        .font(.caption2)
+                        .foregroundStyle(recorder.inputIsBluetooth ? .indigo : .secondary)
+
                     // Settings strip
                     VStack(spacing: 0) {
                         // Model picker
