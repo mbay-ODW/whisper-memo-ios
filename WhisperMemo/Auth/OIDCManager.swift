@@ -11,6 +11,7 @@ final class OIDCManager: NSObject, ObservableObject {
 
     private var codeVerifier: String?
     private var authSession: ASWebAuthenticationSession?
+    private var anchorProvider: PresentationAnchorProvider?
 
     // Keychain keys
     private let kAccessToken  = "oidc_access_token"
@@ -88,12 +89,15 @@ final class OIDCManager: NSObject, ObservableObject {
                     else if let url { cont.resume(returning: url) }
                     else { cont.resume(throwing: URLError(.badServerResponse)) }
                 }
-                session.presentationContextProvider = PresentationAnchorProvider(anchor: anchor)
+                let provider = PresentationAnchorProvider(anchor: anchor)
+                self.anchorProvider = provider  // retain: presentationContextProvider is weak
+                session.presentationContextProvider = provider
                 session.prefersEphemeralWebBrowserSession = false
-                self.authSession = session  // retain to prevent deallocation
+                self.authSession = session
                 session.start()
             }
             authSession = nil
+            anchorProvider = nil
             guard let code = URLComponents(url: callbackURL, resolvingAgainstBaseURL: false)?
                 .queryItems?.first(where: { $0.name == "code" })?.value else {
                 throw URLError(.badServerResponse)
