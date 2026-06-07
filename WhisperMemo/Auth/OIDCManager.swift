@@ -92,7 +92,7 @@ final class OIDCManager: NSObject, ObservableObject {
                 let provider = PresentationAnchorProvider(anchor: anchor)
                 self.anchorProvider = provider  // retain: presentationContextProvider is weak
                 session.presentationContextProvider = provider
-                session.prefersEphemeralWebBrowserSession = false
+                session.prefersEphemeralWebBrowserSession = true
                 self.authSession = session
                 session.start()
             }
