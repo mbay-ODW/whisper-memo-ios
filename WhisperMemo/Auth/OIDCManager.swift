@@ -1,6 +1,7 @@
 import Foundation
 import AuthenticationServices
 import CryptoKit
+import Combine
 
 @MainActor
 final class OIDCManager: NSObject, ObservableObject {
