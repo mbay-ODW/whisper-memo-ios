@@ -10,6 +10,7 @@ final class OIDCManager: NSObject, ObservableObject {
     @Published var error: String?
 
     private var codeVerifier: String?
+    private var authSession: ASWebAuthenticationSession?
 
     // Keychain keys
     private let kAccessToken  = "oidc_access_token"
@@ -89,8 +90,10 @@ final class OIDCManager: NSObject, ObservableObject {
                 }
                 session.presentationContextProvider = PresentationAnchorProvider(anchor: anchor)
                 session.prefersEphemeralWebBrowserSession = false
+                self.authSession = session  // retain to prevent deallocation
                 session.start()
             }
+            authSession = nil
             guard let code = URLComponents(url: callbackURL, resolvingAgainstBaseURL: false)?
                 .queryItems?.first(where: { $0.name == "code" })?.value else {
                 throw URLError(.badServerResponse)

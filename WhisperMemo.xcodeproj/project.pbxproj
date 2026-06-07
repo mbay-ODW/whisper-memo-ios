@@ -1,0 +1,382 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0155BBB2FB12A65AF5AF7DDD /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35BB863C73E54C5D4406770 /* AudioRecorder.swift */; };
+		133E9AEA41C2E434D318C644 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00479567CDDFFB8791D4787A /* AppSettings.swift */; };
+		3B02DAFE8CD371D63E29554D /* UploadQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3AE1B1FAF8E2A747FE6910A /* UploadQueue.swift */; };
+		4E53D76395F0D63748AFFCD1 /* WhisperMemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6A1ED50FD611624CED683E /* WhisperMemoApp.swift */; };
+		50EC104B30E2F600F26DE2B5 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AA510F2603FB270E235D20 /* Models.swift */; };
+		517052566C767EDF1E75477E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C804B175BCC120DC7814112B /* SettingsView.swift */; };
+		5DC6551EFEB247E10E88343A /* JobListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED01A32BF4320AF44874009 /* JobListView.swift */; };
+		6DE3FC7028DEB988EA7CD438 /* OIDCManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656E393874936109C680B46E /* OIDCManager.swift */; };
+		A2AAF22B61AF31B6A9435DB9 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EF533727385F321E77E7FD /* Keychain.swift */; };
+		B70F4CF6A68952F539D3D585 /* JobStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CAB7DEAABFF91532AD5950 /* JobStore.swift */; };
+		C12BA71099188858422972B8 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E27AAE3C89F1A569A6DC2F9 /* APIClient.swift */; };
+		F16524FF3F43073AAE26B5D0 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB125882FDD590509A4F6ED4 /* RecordView.swift */; };
+		F51FCBAA81C0F6C92E8893B5 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FEFE798466CCB5360F08D10 /* LoginView.swift */; };
+		FC5F28C5FCFF45812EAEDC75 /* TranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B21D47440EB4845F2DA4CD /* TranscriptView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		00479567CDDFFB8791D4787A /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		41EF533727385F321E77E7FD /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		46AE3A761D981F5BDCF70437 /* WhisperMemo.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = WhisperMemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		656E393874936109C680B46E /* OIDCManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OIDCManager.swift; sourceTree = "<group>"; };
+		6E27AAE3C89F1A569A6DC2F9 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		77AA510F2603FB270E235D20 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		7FEFE798466CCB5360F08D10 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		87B21D47440EB4845F2DA4CD /* TranscriptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptView.swift; sourceTree = "<group>"; };
+		8ED01A32BF4320AF44874009 /* JobListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobListView.swift; sourceTree = "<group>"; };
+		96CAB7DEAABFF91532AD5950 /* JobStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobStore.swift; sourceTree = "<group>"; };
+		BB125882FDD590509A4F6ED4 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
+		C35BB863C73E54C5D4406770 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
+		C804B175BCC120DC7814112B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		CC6A1ED50FD611624CED683E /* WhisperMemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperMemoApp.swift; sourceTree = "<group>"; };
+		F3AE1B1FAF8E2A747FE6910A /* UploadQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadQueue.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		1C0690915BE802AE7E445F22 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				C35BB863C73E54C5D4406770 /* AudioRecorder.swift */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		36E4516A827A65D58D6DAD09 /* Queue */ = {
+			isa = PBXGroup;
+			children = (
+				F3AE1B1FAF8E2A747FE6910A /* UploadQueue.swift */,
+			);
+			path = Queue;
+			sourceTree = "<group>";
+		};
+		42F2B7D5E71CF84DD39425E8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				46AE3A761D981F5BDCF70437 /* WhisperMemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		482A92D5BB8895D4EF6FE410 /* WhisperMemo */ = {
+			isa = PBXGroup;
+			children = (
+				00479567CDDFFB8791D4787A /* AppSettings.swift */,
+				96CAB7DEAABFF91532AD5950 /* JobStore.swift */,
+				CC6A1ED50FD611624CED683E /* WhisperMemoApp.swift */,
+				1C0690915BE802AE7E445F22 /* Audio */,
+				BB116945E48F8797E60D7D1D /* Auth */,
+				9D3739CF181303CEF250C0E6 /* Network */,
+				36E4516A827A65D58D6DAD09 /* Queue */,
+				F0B3AB66A6D039308E29F221 /* Views */,
+			);
+			path = WhisperMemo;
+			sourceTree = "<group>";
+		};
+		9D3739CF181303CEF250C0E6 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				6E27AAE3C89F1A569A6DC2F9 /* APIClient.swift */,
+				77AA510F2603FB270E235D20 /* Models.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		BB116945E48F8797E60D7D1D /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				41EF533727385F321E77E7FD /* Keychain.swift */,
+				656E393874936109C680B46E /* OIDCManager.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		C3D652691B6650C6861CACB0 = {
+			isa = PBXGroup;
+			children = (
+				482A92D5BB8895D4EF6FE410 /* WhisperMemo */,
+				42F2B7D5E71CF84DD39425E8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F0B3AB66A6D039308E29F221 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8ED01A32BF4320AF44874009 /* JobListView.swift */,
+				7FEFE798466CCB5360F08D10 /* LoginView.swift */,
+				BB125882FDD590509A4F6ED4 /* RecordView.swift */,
+				C804B175BCC120DC7814112B /* SettingsView.swift */,
+				87B21D47440EB4845F2DA4CD /* TranscriptView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8ED0297116FF9B236C025024 /* WhisperMemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A563E33EA9B5CAC52C4A57FE /* Build configuration list for PBXNativeTarget "WhisperMemo" */;
+			buildPhases = (
+				1F3BA36B3056E73DE3A5A7DE /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WhisperMemo;
+			packageProductDependencies = (
+			);
+			productName = WhisperMemo;
+			productReference = 46AE3A761D981F5BDCF70437 /* WhisperMemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		293A7FF30D586583616E73F0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					8ED0297116FF9B236C025024 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = F097278615856613DFB8E46F /* Build configuration list for PBXProject "WhisperMemo" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = C3D652691B6650C6861CACB0;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 42F2B7D5E71CF84DD39425E8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8ED0297116FF9B236C025024 /* WhisperMemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1F3BA36B3056E73DE3A5A7DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C12BA71099188858422972B8 /* APIClient.swift in Sources */,
+				133E9AEA41C2E434D318C644 /* AppSettings.swift in Sources */,
+				0155BBB2FB12A65AF5AF7DDD /* AudioRecorder.swift in Sources */,
+				5DC6551EFEB247E10E88343A /* JobListView.swift in Sources */,
+				B70F4CF6A68952F539D3D585 /* JobStore.swift in Sources */,
+				A2AAF22B61AF31B6A9435DB9 /* Keychain.swift in Sources */,
+				F51FCBAA81C0F6C92E8893B5 /* LoginView.swift in Sources */,
+				50EC104B30E2F600F26DE2B5 /* Models.swift in Sources */,
+				6DE3FC7028DEB988EA7CD438 /* OIDCManager.swift in Sources */,
+				F16524FF3F43073AAE26B5D0 /* RecordView.swift in Sources */,
+				517052566C767EDF1E75477E /* SettingsView.swift in Sources */,
+				FC5F28C5FCFF45812EAEDC75 /* TranscriptView.swift in Sources */,
+				3B02DAFE8CD371D63E29554D /* UploadQueue.swift in Sources */,
+				4E53D76395F0D63748AFFCD1 /* WhisperMemoApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		143DFAC1B404ADB711E37788 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = WhisperMemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "de.bay-ram.WhisperMemo";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		289CF76CB49C03437FC92B3E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		93CDD27E5AE61080F8356E10 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		DF59D7050C8302AB0C7AB7EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = WhisperMemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "de.bay-ram.WhisperMemo";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A563E33EA9B5CAC52C4A57FE /* Build configuration list for PBXNativeTarget "WhisperMemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DF59D7050C8302AB0C7AB7EB /* Debug */,
+				143DFAC1B404ADB711E37788 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F097278615856613DFB8E46F /* Build configuration list for PBXProject "WhisperMemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				93CDD27E5AE61080F8356E10 /* Debug */,
+				289CF76CB49C03437FC92B3E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 293A7FF30D586583616E73F0 /* Project object */;
+}

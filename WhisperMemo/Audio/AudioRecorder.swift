@@ -26,7 +26,7 @@ final class AudioRecorder: NSObject, ObservableObject {
 
         let session = AVAudioSession.sharedInstance()
         try session.setCategory(.playAndRecord, mode: .default,
-                                options: [.defaultToSpeaker, .allowBluetooth])
+                                options: [.defaultToSpeaker, .allowBluetoothA2DP])
         try session.setActive(true)
 
         let filename = "memo_\(Int(Date().timeIntervalSince1970)).m4a"

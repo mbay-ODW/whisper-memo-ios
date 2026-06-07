@@ -66,7 +66,7 @@ struct TranscriptView: View {
                                         Divider().padding(.leading)
                                     }
                                 }
-                                .background(.secondarySystemGroupedBackground, in: RoundedRectangle(cornerRadius: 12))
+                                .background(Color(UIColor.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
                                 .padding(.horizontal)
                             }
                         }
