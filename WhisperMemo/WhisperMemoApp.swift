@@ -17,19 +17,20 @@ struct WhisperMemoApp: App {
                 .environmentObject(jobStore)
                 .environmentObject(queue)
                 .task {
-                    // OIDC-Konfiguration wiederherstellen
                     if !settings.oidcIssuer.isEmpty {
                         await oidc.configure(
                             issuer: settings.oidcIssuer,
                             clientId: settings.oidcClientId
                         )
                     }
-                    // APIClient und JobStore konfigurieren
                     if let url = URL(string: settings.serverURL), !settings.serverURL.isEmpty {
                         let client = APIClient(baseURL: url, oidc: oidc)
                         jobStore.configure(api: client)
                         queue.configure(api: client)
                     }
+                }
+                .onChange(of: oidc.isAuthenticated) { _, isAuth in
+                    if isAuth { Task { await queue.processQueue() } }
                 }
         }
     }

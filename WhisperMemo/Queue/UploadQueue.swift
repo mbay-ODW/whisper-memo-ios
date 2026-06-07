@@ -10,6 +10,7 @@ struct QueuedUpload: Codable, Identifiable {
     let model: String
     let createdAt: Date
     var retryCount: Int = 0
+    var lastError: String?
 }
 
 @MainActor
@@ -70,6 +71,7 @@ final class UploadQueue: ObservableObject {
             } catch {
                 if var updated = pending.first {
                     updated.retryCount += 1
+                    updated.lastError = error.localizedDescription
                     pending[0] = updated
                     save()
                 }

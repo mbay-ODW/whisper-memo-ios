@@ -111,15 +111,35 @@ struct JobRow: View {
 
 struct QueuedRow: View {
     let item: QueuedUpload
+    @EnvironmentObject var queue: UploadQueue
+
     var body: some View {
         HStack {
-            Image(systemName: "arrow.up.circle")
-                .foregroundStyle(.orange)
-            VStack(alignment: .leading) {
+            Image(systemName: item.lastError != nil ? "exclamationmark.circle" : "arrow.up.circle")
+                .foregroundStyle(item.lastError != nil ? .red : .orange)
+            VStack(alignment: .leading, spacing: 2) {
                 Text(item.filename).font(.subheadline)
-                Text("Wartet auf Verbindung").font(.caption).foregroundStyle(.secondary)
+                if let err = item.lastError {
+                    Text(err).font(.caption).foregroundStyle(.red).lineLimit(2)
+                } else {
+                    Text(queue.isOnline ? "Wird hochgeladen…" : "Wartet auf Verbindung")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+                if item.retryCount > 0 {
+                    Text("Versuche: \(item.retryCount)").font(.caption2).foregroundStyle(.tertiary)
+                }
+            }
+            Spacer()
+            if item.lastError != nil {
+                Button {
+                    Task { await queue.processQueue() }
+                } label: {
+                    Image(systemName: "arrow.clockwise").foregroundStyle(.indigo)
+                }
+                .buttonStyle(.borderless)
             }
         }
+        .padding(.vertical, 2)
     }
 }
 
