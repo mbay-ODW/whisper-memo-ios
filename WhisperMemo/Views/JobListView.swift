@@ -42,6 +42,18 @@ struct JobListView: View {
                                     NavigationLink(destination: TranscriptView(job: job)) {
                                         JobRow(job: job)
                                     }
+                                    .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                        if let text = job.full_text, !text.isEmpty {
+                                            ShareLink(
+                                                item: text,
+                                                subject: Text(job.filename),
+                                                message: Text("Transkript: \(job.filename)")
+                                            ) {
+                                                Label("Teilen", systemImage: "square.and.arrow.up")
+                                            }
+                                            .tint(.indigo)
+                                        }
+                                    }
                                 }
                             }
                         }

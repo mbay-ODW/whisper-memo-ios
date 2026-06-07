@@ -82,6 +82,16 @@ struct TranscriptView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
+                if let text = displayJob.full_text, !text.isEmpty {
+                    ShareLink(
+                        item: text,
+                        subject: Text(displayJob.filename),
+                        message: Text("Transkript: \(displayJob.filename)")
+                    ) {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                }
+
                 Button {
                     copyToClipboard()
                 } label: {
@@ -94,7 +104,7 @@ struct TranscriptView: View {
                     Button("SRT herunterladen") { download("srt") }
                     Button("JSON herunterladen") { download("json") }
                 } label: {
-                    Image(systemName: "square.and.arrow.down")
+                    Image(systemName: "arrow.down.circle")
                 }
             }
         }
