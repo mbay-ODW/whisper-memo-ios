@@ -32,11 +32,10 @@ struct LoginView: View {
                             .font(.footnote)
                             .foregroundStyle(.red)
                             .multilineTextAlignment(.center)
+                            .padding(.horizontal)
                     }
 
-                    SignInButton()
-                        .frame(height: 56)
-                        .cornerRadius(14)
+                    AuthButton()
 
                     NavigationLink("Serveradresse einrichten", destination: SettingsView())
                         .font(.footnote)
@@ -56,56 +55,24 @@ struct LoginView: View {
     }
 }
 
-private struct SignInButton: UIViewRepresentable {
-    @EnvironmentObject var oidc: OIDCManager
-
-    func makeUIView(context: Context) -> ASAuthorizationAppleIDButton {
-        // We repurpose the Apple button style for a "Weiter mit Authelia" button.
-        // In production you'd use a custom UIButton.
-        let btn = UIButton(type: .system)
-        btn.setTitle("Mit Authelia anmelden", for: .normal)
-        btn.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
-        btn.backgroundColor = UIColor(named: "AccentColor") ?? .systemIndigo
-        btn.setTitleColor(.white, for: .normal)
-        btn.layer.cornerRadius = 14
-        btn.addTarget(context.coordinator, action: #selector(Coordinator.login), for: .touchUpInside)
-        return btn as! ASAuthorizationAppleIDButton
-    }
-
-    func updateUIView(_ uiView: ASAuthorizationAppleIDButton, context: Context) {}
-    func makeCoordinator() -> Coordinator { Coordinator(oidc: oidc) }
-
-    final class Coordinator: NSObject {
-        let oidc: OIDCManager
-        init(oidc: OIDCManager) { self.oidc = oidc }
-
-        @objc func login(_ sender: UIButton) {
-            guard let window = sender.window else { return }
-            Task { await oidc.login(from: window) }
-        }
-    }
-}
-
-// Simpler SwiftUI-only sign-in button
 struct AuthButton: View {
     @EnvironmentObject var oidc: OIDCManager
 
     var body: some View {
         Button {
-            // anchor ist UIWindow – über UIApplication
-            if let window = UIApplication.shared.connectedScenes
+            guard let window = UIApplication.shared.connectedScenes
                 .compactMap({ $0 as? UIWindowScene })
-                .first?.windows.first {
-                Task { await oidc.login(from: window) }
-            }
+                .first?.windows.first else { return }
+            Task { await oidc.login(from: window) }
         } label: {
             Label("Mit Authelia anmelden", systemImage: "person.badge.key.fill")
                 .frame(maxWidth: .infinity)
                 .padding()
                 .background(Color.indigo)
                 .foregroundStyle(.white)
-                .cornerRadius(14)
+                .clipShape(RoundedRectangle(cornerRadius: 14))
                 .font(.body.weight(.semibold))
         }
+        .disabled(oidc.isLoading)
     }
 }

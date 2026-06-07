@@ -1,5 +1,6 @@
 import Foundation
 import Network
+import Combine
 
 struct QueuedUpload: Codable, Identifiable {
     let id: String
@@ -16,7 +17,7 @@ final class UploadQueue: ObservableObject {
     @Published private(set) var pending: [QueuedUpload] = []
     @Published private(set) var isOnline = true
 
-    private let api: APIClient
+    private var api: APIClient?
     private let monitor = NWPathMonitor()
     private let monitorQueue = DispatchQueue(label: "upload-queue-monitor")
     private var isUploading = false
@@ -26,10 +27,14 @@ final class UploadQueue: ObservableObject {
             .appendingPathComponent("upload_queue.json")
     }
 
-    init(api: APIClient) {
-        self.api = api
+    init() {
         load()
         startMonitoring()
+    }
+
+    func configure(api: APIClient) {
+        self.api = api
+        Task { await processQueue() }
     }
 
     func enqueue(fileURL: URL, filename: String, prompt: String, model: String) {
@@ -47,7 +52,7 @@ final class UploadQueue: ObservableObject {
     }
 
     func processQueue() async {
-        guard isOnline, !isUploading, !pending.isEmpty else { return }
+        guard let api, isOnline, !isUploading, !pending.isEmpty else { return }
         isUploading = true
         defer { isUploading = false }
 
@@ -63,7 +68,6 @@ final class UploadQueue: ObservableObject {
                 try? FileManager.default.removeItem(at: item.fileURL)
                 save()
             } catch {
-                // Back-off: keep item, try again on next reconnect
                 if var updated = pending.first {
                     updated.retryCount += 1
                     pending[0] = updated
