@@ -65,6 +65,7 @@ final class OIDCManager: NSObject, ObservableObject {
 
         let verifier = generateCodeVerifier()
         let challenge = generateCodeChallenge(from: verifier)
+        let state = generateState()
         codeVerifier = verifier
 
         var components = URLComponents(url: authEndpoint, resolvingAgainstBaseURL: false)!
@@ -72,7 +73,8 @@ final class OIDCManager: NSObject, ObservableObject {
             .init(name: "client_id",             value: clientId),
             .init(name: "redirect_uri",          value: "whispermemo://oauth/callback"),
             .init(name: "response_type",         value: "code"),
-            .init(name: "scope",                 value: "openid profile email"),
+            .init(name: "scope",                 value: "openid profile email offline_access"),
+            .init(name: "state",                 value: state),
             .init(name: "code_challenge",        value: challenge),
             .init(name: "code_challenge_method", value: "S256"),
         ]
@@ -98,8 +100,16 @@ final class OIDCManager: NSObject, ObservableObject {
             }
             authSession = nil
             anchorProvider = nil
-            guard let code = URLComponents(url: callbackURL, resolvingAgainstBaseURL: false)?
-                .queryItems?.first(where: { $0.name == "code" })?.value else {
+            let items = URLComponents(url: callbackURL, resolvingAgainstBaseURL: false)?.queryItems
+            if let oauthError = items?.first(where: { $0.name == "error" })?.value {
+                let desc = items?.first(where: { $0.name == "error_description" })?.value ?? oauthError
+                throw URLError(.badServerResponse, userInfo: [NSLocalizedDescriptionKey: desc])
+            }
+            guard let returnedState = items?.first(where: { $0.name == "state" })?.value,
+                  returnedState == state else {
+                throw URLError(.badServerResponse, userInfo: [NSLocalizedDescriptionKey: "State mismatch"])
+            }
+            guard let code = items?.first(where: { $0.name == "code" })?.value else {
                 throw URLError(.badServerResponse)
             }
             try await exchangeCode(code, verifier: verifier)
@@ -190,6 +200,15 @@ final class OIDCManager: NSObject, ObservableObject {
         if let exp = token.expires_in {
             Keychain.save(String(Date().timeIntervalSince1970 + Double(exp)), for: kExpiry)
         }
+    }
+
+    private func generateState() -> String {
+        var bytes = [UInt8](repeating: 0, count: 16)
+        _ = SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
+        return Data(bytes).base64EncodedString()
+            .replacingOccurrences(of: "+", with: "-")
+            .replacingOccurrences(of: "/", with: "_")
+            .replacingOccurrences(of: "=", with: "")
     }
 
     private func generateCodeVerifier() -> String {
