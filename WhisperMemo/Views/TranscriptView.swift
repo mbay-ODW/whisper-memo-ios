@@ -2,7 +2,7 @@ import SwiftUI
 
 struct TranscriptView: View {
     let job: Job
-    @EnvironmentObject var api: APIClient
+    @EnvironmentObject var jobStore: JobStore
     @State private var fullJob: Job?
     @State private var showTimestamps = false
     @State private var copied = false
@@ -100,7 +100,7 @@ struct TranscriptView: View {
         }
         .task {
             if displayJob.full_text == nil || (displayJob.segments?.isEmpty ?? true) {
-                fullJob = try? await api.fetchJob(id: job.id)
+                fullJob = try? await jobStore.fetchJob(id: job.id)
             }
         }
     }
@@ -117,7 +117,7 @@ struct TranscriptView: View {
 
     private func download(_ format: String) {
         Task {
-            guard let text = try? await api.downloadText(jobId: job.id, format: format) else { return }
+            guard let text = try? await jobStore.downloadText(jobId: job.id, format: format) else { return }
             let filename = "\(URL(fileURLWithPath: job.filename).deletingPathExtension().lastPathComponent).\(format)"
             let url = FileManager.default.temporaryDirectory.appendingPathComponent(filename)
             try? text.write(to: url, atomically: true, encoding: .utf8)

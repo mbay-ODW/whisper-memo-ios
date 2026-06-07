@@ -37,4 +37,14 @@ final class JobStore: ObservableObject {
         try await api?.deleteJob(id: id)
         jobs.removeAll { $0.id == id }
     }
+
+    func fetchJob(id: String) async throws -> Job {
+        guard let api else { throw APIError.serverError("Nicht konfiguriert") }
+        return try await api.fetchJob(id: id)
+    }
+
+    func downloadText(jobId: String, format: String) async throws -> String {
+        guard let api else { throw APIError.serverError("Nicht konfiguriert") }
+        return try await api.downloadText(jobId: jobId, format: format)
+    }
 }

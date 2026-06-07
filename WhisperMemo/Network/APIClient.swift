@@ -28,7 +28,7 @@ final class APIClient {
         let url = baseURL.appendingPathComponent("api/transcribe")
         var req = URLRequest(url: url)
         req.httpMethod = "POST"
-        try await injectAuth(&req)
+        try await addAuth(to: &req)
 
         let boundary = UUID().uuidString
         req.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
@@ -65,7 +65,7 @@ final class APIClient {
 
     func fetchJobs() async throws -> [Job] {
         var req = URLRequest(url: baseURL.appendingPathComponent("api/jobs"))
-        try await injectAuth(&req)
+        try await addAuth(to: &req)
         let (data, resp) = try await URLSession.shared.data(for: req)
         try checkResponse(resp, data: data)
         return try JSONDecoder().decode([Job].self, from: data)
@@ -73,7 +73,7 @@ final class APIClient {
 
     func fetchJob(id: String) async throws -> Job {
         var req = URLRequest(url: baseURL.appendingPathComponent("api/jobs/\(id)"))
-        try await injectAuth(&req)
+        try await addAuth(to: &req)
         let (data, resp) = try await URLSession.shared.data(for: req)
         try checkResponse(resp, data: data)
         return try JSONDecoder().decode(Job.self, from: data)
@@ -82,7 +82,7 @@ final class APIClient {
     func cancelJob(id: String) async throws {
         var req = URLRequest(url: baseURL.appendingPathComponent("api/jobs/\(id)/cancel"))
         req.httpMethod = "POST"
-        try await injectAuth(&req)
+        try await addAuth(to: &req)
         let (data, resp) = try await URLSession.shared.data(for: req)
         try checkResponse(resp, data: data)
     }
@@ -90,7 +90,7 @@ final class APIClient {
     func deleteJob(id: String) async throws {
         var req = URLRequest(url: baseURL.appendingPathComponent("api/jobs/\(id)/delete"))
         req.httpMethod = "DELETE"
-        try await injectAuth(&req)
+        try await addAuth(to: &req)
         let (data, resp) = try await URLSession.shared.data(for: req)
         try checkResponse(resp, data: data)
     }
@@ -99,7 +99,7 @@ final class APIClient {
 
     func downloadText(jobId: String, format: String) async throws -> String {
         var req = URLRequest(url: baseURL.appendingPathComponent("api/download/\(jobId)/\(format)"))
-        try await injectAuth(&req)
+        try await addAuth(to: &req)
         let (data, resp) = try await URLSession.shared.data(for: req)
         try checkResponse(resp, data: data)
         return String(data: data, encoding: .utf8) ?? ""
@@ -107,9 +107,12 @@ final class APIClient {
 
     // MARK: – Auth injection
 
-    @MainActor
-    private func injectAuth(_ req: inout URLRequest) async throws {
-        let token = try await oidc.accessToken()
+    private func authToken() async throws -> String {
+        try await oidc.accessToken()
+    }
+
+    private func addAuth(to req: inout URLRequest) async throws {
+        let token = try await authToken()
         req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
     }
 
