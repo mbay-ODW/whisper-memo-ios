@@ -2,19 +2,35 @@ import Foundation
 
 final class APIClient {
     let baseURL: URL
-    private let oidc: OIDCManager
+    private let token: String
 
-    init(baseURL: URL, oidc: OIDCManager) {
+    init(baseURL: URL, token: String) {
         self.baseURL = baseURL
-        self.oidc = oidc
+        self.token = token
     }
 
-    // MARK: – Config (public, kein Auth)
+    // MARK: – Config (public, no auth)
 
     func fetchConfig() async throws -> ServerConfig {
         let req = URLRequest(url: baseURL.appendingPathComponent("api/config"))
         let (data, _) = try await URLSession.shared.data(for: req)
         return try JSONDecoder().decode(ServerConfig.self, from: data)
+    }
+
+    // MARK: – Health
+
+    /// True if the server's /health endpoint responds with 2xx within timeout.
+    /// Authoritative reachability check — preferred over NWPathMonitor alone.
+    func ping(timeout: TimeInterval = 5) async -> Bool {
+        var req = URLRequest(url: baseURL.appendingPathComponent("health"))
+        req.timeoutInterval = timeout
+        do {
+            let (_, resp) = try await URLSession.shared.data(for: req)
+            guard let http = resp as? HTTPURLResponse else { return false }
+            return (200..<300).contains(http.statusCode)
+        } catch {
+            return false
+        }
     }
 
     // MARK: – Upload
@@ -28,7 +44,7 @@ final class APIClient {
         let url = baseURL.appendingPathComponent("api/transcribe")
         var req = URLRequest(url: url)
         req.httpMethod = "POST"
-        try await addAuth(to: &req)
+        addAuth(to: &req)
 
         let boundary = UUID().uuidString
         req.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
@@ -36,7 +52,6 @@ final class APIClient {
         var body = Data()
         func append(_ string: String) { body.append(Data(string.utf8)) }
 
-        // File field
         let fileData = try Data(contentsOf: fileURL)
         append("--\(boundary)\r\n")
         append("Content-Disposition: form-data; name=\"file\"; filename=\"\(filename)\"\r\n")
@@ -44,7 +59,6 @@ final class APIClient {
         body.append(fileData)
         append("\r\n")
 
-        // Text fields
         for (key, value) in [("initial_prompt", prompt), ("model", model)] {
             append("--\(boundary)\r\n")
             append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
@@ -65,7 +79,7 @@ final class APIClient {
 
     func fetchJobs() async throws -> [Job] {
         var req = URLRequest(url: baseURL.appendingPathComponent("api/jobs"))
-        try await addAuth(to: &req)
+        addAuth(to: &req)
         let (data, resp) = try await URLSession.shared.data(for: req)
         try checkResponse(resp, data: data)
         return try JSONDecoder().decode([Job].self, from: data)
@@ -73,7 +87,7 @@ final class APIClient {
 
     func fetchJob(id: String) async throws -> Job {
         var req = URLRequest(url: baseURL.appendingPathComponent("api/jobs/\(id)"))
-        try await addAuth(to: &req)
+        addAuth(to: &req)
         let (data, resp) = try await URLSession.shared.data(for: req)
         try checkResponse(resp, data: data)
         return try JSONDecoder().decode(Job.self, from: data)
@@ -82,7 +96,7 @@ final class APIClient {
     func cancelJob(id: String) async throws {
         var req = URLRequest(url: baseURL.appendingPathComponent("api/jobs/\(id)/cancel"))
         req.httpMethod = "POST"
-        try await addAuth(to: &req)
+        addAuth(to: &req)
         let (data, resp) = try await URLSession.shared.data(for: req)
         try checkResponse(resp, data: data)
     }
@@ -90,7 +104,7 @@ final class APIClient {
     func deleteJob(id: String) async throws {
         var req = URLRequest(url: baseURL.appendingPathComponent("api/jobs/\(id)/delete"))
         req.httpMethod = "DELETE"
-        try await addAuth(to: &req)
+        addAuth(to: &req)
         let (data, resp) = try await URLSession.shared.data(for: req)
         try checkResponse(resp, data: data)
     }
@@ -99,20 +113,15 @@ final class APIClient {
 
     func downloadText(jobId: String, format: String) async throws -> String {
         var req = URLRequest(url: baseURL.appendingPathComponent("api/download/\(jobId)/\(format)"))
-        try await addAuth(to: &req)
+        addAuth(to: &req)
         let (data, resp) = try await URLSession.shared.data(for: req)
         try checkResponse(resp, data: data)
         return String(data: data, encoding: .utf8) ?? ""
     }
 
-    // MARK: – Auth injection
+    // MARK: – Auth
 
-    private func authToken() async throws -> String {
-        try await oidc.accessToken()
-    }
-
-    private func addAuth(to req: inout URLRequest) async throws {
-        let token = try await authToken()
+    private func addAuth(to req: inout URLRequest) {
         req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
     }
 
@@ -135,9 +144,4 @@ enum APIError: LocalizedError {
         case .serverError(let m): return m
         }
     }
-}
-
-private func fmtTime(_ s: Double) -> String {
-    let m = Int(s / 60), sec = Int(s) % 60
-    return String(format: "%d:%02d", m, sec)
 }

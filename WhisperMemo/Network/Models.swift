@@ -1,8 +1,6 @@
 import Foundation
 
 struct ServerConfig: Decodable {
-    let oidc_issuer: String
-    let oidc_client_id: String
     let model_default: String
     let models: [String]
 }

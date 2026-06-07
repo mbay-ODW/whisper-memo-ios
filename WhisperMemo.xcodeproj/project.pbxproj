@@ -14,23 +14,17 @@
 		50EC104B30E2F600F26DE2B5 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AA510F2603FB270E235D20 /* Models.swift */; };
 		517052566C767EDF1E75477E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C804B175BCC120DC7814112B /* SettingsView.swift */; };
 		5DC6551EFEB247E10E88343A /* JobListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED01A32BF4320AF44874009 /* JobListView.swift */; };
-		6DE3FC7028DEB988EA7CD438 /* OIDCManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656E393874936109C680B46E /* OIDCManager.swift */; };
-		A2AAF22B61AF31B6A9435DB9 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EF533727385F321E77E7FD /* Keychain.swift */; };
 		B70F4CF6A68952F539D3D585 /* JobStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CAB7DEAABFF91532AD5950 /* JobStore.swift */; };
 		C12BA71099188858422972B8 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E27AAE3C89F1A569A6DC2F9 /* APIClient.swift */; };
 		F16524FF3F43073AAE26B5D0 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB125882FDD590509A4F6ED4 /* RecordView.swift */; };
-		F51FCBAA81C0F6C92E8893B5 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FEFE798466CCB5360F08D10 /* LoginView.swift */; };
 		FC5F28C5FCFF45812EAEDC75 /* TranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B21D47440EB4845F2DA4CD /* TranscriptView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		00479567CDDFFB8791D4787A /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
-		41EF533727385F321E77E7FD /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		46AE3A761D981F5BDCF70437 /* WhisperMemo.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = WhisperMemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		656E393874936109C680B46E /* OIDCManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OIDCManager.swift; sourceTree = "<group>"; };
 		6E27AAE3C89F1A569A6DC2F9 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		77AA510F2603FB270E235D20 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
-		7FEFE798466CCB5360F08D10 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		87B21D47440EB4845F2DA4CD /* TranscriptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptView.swift; sourceTree = "<group>"; };
 		8ED01A32BF4320AF44874009 /* JobListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobListView.swift; sourceTree = "<group>"; };
 		96CAB7DEAABFF91532AD5950 /* JobStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobStore.swift; sourceTree = "<group>"; };
@@ -73,7 +67,6 @@
 				96CAB7DEAABFF91532AD5950 /* JobStore.swift */,
 				CC6A1ED50FD611624CED683E /* WhisperMemoApp.swift */,
 				1C0690915BE802AE7E445F22 /* Audio */,
-				BB116945E48F8797E60D7D1D /* Auth */,
 				9D3739CF181303CEF250C0E6 /* Network */,
 				36E4516A827A65D58D6DAD09 /* Queue */,
 				F0B3AB66A6D039308E29F221 /* Views */,
@@ -90,15 +83,6 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
-		BB116945E48F8797E60D7D1D /* Auth */ = {
-			isa = PBXGroup;
-			children = (
-				41EF533727385F321E77E7FD /* Keychain.swift */,
-				656E393874936109C680B46E /* OIDCManager.swift */,
-			);
-			path = Auth;
-			sourceTree = "<group>";
-		};
 		C3D652691B6650C6861CACB0 = {
 			isa = PBXGroup;
 			children = (
@@ -111,7 +95,6 @@
 			isa = PBXGroup;
 			children = (
 				8ED01A32BF4320AF44874009 /* JobListView.swift */,
-				7FEFE798466CCB5360F08D10 /* LoginView.swift */,
 				BB125882FDD590509A4F6ED4 /* RecordView.swift */,
 				C804B175BCC120DC7814112B /* SettingsView.swift */,
 				87B21D47440EB4845F2DA4CD /* TranscriptView.swift */,
@@ -183,10 +166,7 @@
 				0155BBB2FB12A65AF5AF7DDD /* AudioRecorder.swift in Sources */,
 				5DC6551EFEB247E10E88343A /* JobListView.swift in Sources */,
 				B70F4CF6A68952F539D3D585 /* JobStore.swift in Sources */,
-				A2AAF22B61AF31B6A9435DB9 /* Keychain.swift in Sources */,
-				F51FCBAA81C0F6C92E8893B5 /* LoginView.swift in Sources */,
 				50EC104B30E2F600F26DE2B5 /* Models.swift in Sources */,
-				6DE3FC7028DEB988EA7CD438 /* OIDCManager.swift in Sources */,
 				F16524FF3F43073AAE26B5D0 /* RecordView.swift in Sources */,
 				517052566C767EDF1E75477E /* SettingsView.swift in Sources */,
 				FC5F28C5FCFF45812EAEDC75 /* TranscriptView.swift in Sources */,

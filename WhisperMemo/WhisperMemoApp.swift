@@ -3,7 +3,6 @@ import SwiftUI
 @main
 struct WhisperMemoApp: App {
     @StateObject private var settings = AppSettings()
-    @StateObject private var oidc     = OIDCManager()
     @StateObject private var recorder = AudioRecorder()
     @StateObject private var jobStore = JobStore()
     @StateObject private var queue    = UploadQueue()
@@ -12,43 +11,32 @@ struct WhisperMemoApp: App {
         WindowGroup {
             RootView()
                 .environmentObject(settings)
-                .environmentObject(oidc)
                 .environmentObject(recorder)
                 .environmentObject(jobStore)
                 .environmentObject(queue)
-                .task {
-                    if !settings.oidcIssuer.isEmpty {
-                        await oidc.configure(
-                            issuer: settings.oidcIssuer,
-                            clientId: settings.oidcClientId
-                        )
-                    }
-                    if let url = URL(string: settings.serverURL), !settings.serverURL.isEmpty {
-                        let client = APIClient(baseURL: url, oidc: oidc)
-                        jobStore.configure(api: client)
-                        queue.configure(api: client)
-                    }
-                }
-                .onChange(of: oidc.isAuthenticated) { _, isAuth in
-                    if isAuth { Task { await queue.processQueue() } }
-                }
+                .task { configureAPI() }
+                .onChange(of: settings.serverURL) { _, _ in configureAPI() }
+                .onChange(of: settings.appToken)  { _, _ in configureAPI() }
         }
+    }
+
+    private func configureAPI() {
+        guard !settings.serverURL.isEmpty, !settings.appToken.isEmpty,
+              let url = URL(string: settings.serverURL) else { return }
+        let client = APIClient(baseURL: url, token: settings.appToken)
+        jobStore.configure(api: client)
+        queue.configure(api: client)
     }
 }
 
 struct RootView: View {
-    @EnvironmentObject var oidc: OIDCManager
     @EnvironmentObject var settings: AppSettings
 
     var body: some View {
-        if settings.serverURL.isEmpty {
+        if settings.serverURL.isEmpty || settings.appToken.isEmpty {
             NavigationStack {
                 SettingsView()
                     .navigationTitle("Einrichtung")
-            }
-        } else if !oidc.isAuthenticated {
-            NavigationStack {
-                LoginView()
             }
         } else {
             MainTabView()

@@ -22,6 +22,9 @@ final class UploadQueue: ObservableObject {
     private let monitor = NWPathMonitor()
     private let monitorQueue = DispatchQueue(label: "upload-queue-monitor")
     private var isUploading = false
+    private var pathSatisfied = true
+    private var serverReachable = true
+    private var healthCheckTask: Task<Void, Never>?
 
     private var storageURL: URL {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -35,7 +38,39 @@ final class UploadQueue: ObservableObject {
 
     func configure(api: APIClient) {
         self.api = api
+        startHealthChecks()
         Task { await processQueue() }
+    }
+
+    private func startHealthChecks() {
+        healthCheckTask?.cancel()
+        healthCheckTask = Task { [weak self] in
+            while !Task.isCancelled {
+                await self?.checkHealth()
+                try? await Task.sleep(for: .seconds(30))
+            }
+        }
+    }
+
+    private func checkHealth() async {
+        guard let api else { return }
+        let ok = await api.ping()
+        await MainActor.run {
+            self.serverReachable = ok
+            self.recomputeOnline()
+        }
+    }
+
+    private func recomputeOnline() {
+        // Online if path is up (or VPN-pending) AND last health check succeeded.
+        // Treat .requiresConnection as up to avoid VPN-establishing false negatives.
+        let pathOK = pathSatisfied
+        let newValue = pathOK && serverReachable
+        let wasOffline = !isOnline
+        isOnline = newValue
+        if newValue && wasOffline {
+            Task { await processQueue() }
+        }
     }
 
     func enqueue(fileURL: URL, filename: String, prompt: String, model: String) {
@@ -98,13 +133,15 @@ final class UploadQueue: ObservableObject {
 
     private func startMonitoring() {
         monitor.pathUpdateHandler = { [weak self] path in
-            let online = path.status == .satisfied
+            let satisfied = (path.status == .satisfied || path.status == .requiresConnection)
             Task { @MainActor [weak self] in
                 guard let self else { return }
-                let wasOffline = !self.isOnline
-                self.isOnline = online
-                if online && wasOffline {
-                    await self.processQueue()
+                self.pathSatisfied = satisfied
+                if satisfied {
+                    // Path came back — re-probe server immediately
+                    Task { await self.checkHealth() }
+                } else {
+                    self.recomputeOnline()
                 }
             }
         }

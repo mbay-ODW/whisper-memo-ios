@@ -33,10 +33,6 @@ targets:
         NSMicrophoneUsageDescription: "WhisperMemo benötigt das Mikrofon für Sprachaufnahmen auf der Baustelle."
         UIBackgroundModes:
           - audio
-        CFBundleURLTypes:
-          - CFBundleURLName: OAuthCallback
-            CFBundleURLSchemes:
-              - whispermemo
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: de.bay-ram.WhisperMemo
