@@ -57,7 +57,20 @@ final class UploadQueue: ObservableObject {
         isUploading = true
         defer { isUploading = false }
 
-        while let item = pending.first, isOnline {
+        var index = 0
+        while index < pending.count, isOnline {
+            let item = pending[index]
+
+            // Skip items whose file is gone — mark and continue
+            guard FileManager.default.fileExists(atPath: item.fileURL.path) else {
+                if pending[index].lastError == nil {
+                    pending[index].lastError = "Datei nicht mehr vorhanden"
+                    save()
+                }
+                index += 1
+                continue
+            }
+
             do {
                 _ = try await api.upload(
                     fileURL: item.fileURL,
@@ -65,19 +78,22 @@ final class UploadQueue: ObservableObject {
                     prompt: item.prompt,
                     model: item.model
                 )
-                pending.removeFirst()
+                pending.remove(at: index)
                 try? FileManager.default.removeItem(at: item.fileURL)
                 save()
+                // don't increment index — next item slides into current position
             } catch {
-                if var updated = pending.first {
-                    updated.retryCount += 1
-                    updated.lastError = error.localizedDescription
-                    pending[0] = updated
-                    save()
-                }
-                break
+                pending[index].retryCount += 1
+                pending[index].lastError = error.localizedDescription
+                save()
+                index += 1  // skip failed item, try next
             }
         }
+    }
+
+    func remove(id: String) {
+        pending.removeAll { $0.id == id }
+        save()
     }
 
     private func startMonitoring() {

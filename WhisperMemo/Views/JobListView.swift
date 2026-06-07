@@ -132,6 +132,12 @@ struct QueuedRow: View {
             Spacer()
             if item.lastError != nil {
                 Button {
+                    queue.remove(id: item.id)
+                } label: {
+                    Image(systemName: "trash").foregroundStyle(.red)
+                }
+                .buttonStyle(.borderless)
+                Button {
                     Task { await queue.processQueue() }
                 } label: {
                     Image(systemName: "arrow.clockwise").foregroundStyle(.indigo)
